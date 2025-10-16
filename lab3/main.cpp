@@ -1,39 +1,44 @@
-#include <iostream>]
+#include <iostream>
 using namespace std;
 int main() {
     setlocale(LC_ALL, "Russian");
-    cout << "Колличество элементов последовательность: ";
-    int N;
-    std::cin >> N;
-    int countN = 0;
-    int product = 0;
-    int max = -2147483648;
-    int minNumCnt = -1;
-    for (N; N > 0; --N) {
-        ++countN;
-        std::cout << "Введите " << countN << " номер последовательности: ";
+    int n;
+    cout << "Введите количество чисел в последовательности: ";
+    cin >> n;
+    int total_sum = 0;
+    int max_number = 0;
+    int max_index = -1;
+    int count = 0;
+    bool found = false;
+
+    cout << "Введите числа последовательности:" << endl;
+    for (int i = 1; i <= n; i++) {
         int num;
-        std::cin >> num;
-        if ((num % 3 != 0) && (num % 5 != 0) && (num % 7 != 0)) {
-            product = product + num;
-            if (num > max) {
-                max = num;
-                minNumCnt = countN;
+        cout << "A" << i << " = ";
+        cin >> num;
+        if (num % 3 != 0 && num % 5 != 0 && num % 7 != 0) {
+            total_sum += num;
+            count++;
+            if (num > max_number || !found) {
+                max_number = num;
+                max_index = i;
+                found = true;
             }
         }
     }
-    if (minNumCnt != -1) {
-        cout << "Сумма всех подходящих чисел = " << product << std::endl;
-        cout << "Максимальный подходящий элемент последовательности = " << max << std::endl;
-        cout << "Номер максимального элемента последовательности = " << minNumCnt << std::endl;
-        std::cout << "Крнец" << std::endl;
+    if (count == 0) {
+        cout << "В последовательности нет подходящих чисел" << endl;
     }
     else {
-        std::cout << "Нет подходящих элементов" << std::endl;
-        std::cout << "Конец" << std::endl;
-    } 
+        cout << "Сумма чисел, не кратных 3, 5 и 7: " << total_sum << endl;
+        cout << "Наибольшее число: " << max_number << endl;
+        cout << "Номер этого числа в последовательности: " << max_index << endl;
+        cout << "Количество подходящих чисел: " << count << endl;
+    }
+    return 0;
+
     // Задание 2
-    /*
+  
     std::cout << "Введите номер ";
     short num;
     int сuntRazrd = 0;
@@ -63,5 +68,5 @@ int main() {
     cout << "Число: " << num << endl;
     cout << "Количество разрядов: " << сuntRazrd << endl;
     cout << "Первая цифра: " << firstnum << endl;
-    */
+    
 }
