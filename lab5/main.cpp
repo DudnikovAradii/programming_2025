@@ -15,7 +15,7 @@ int skleitDvaChisla(int a, int b) {
     return a * (count * 10) + b;
 }
 // Функция для нахождения противоположного числа
-int protivopolozhnoeChislo(int a) {
+int skleitDvaChisla(int a) {
     cout << "исп. функция противоположного числа" << endl;
     return -a;
 }
@@ -63,26 +63,20 @@ int main() {
         else if (count == 1) {
             // Определяем какое именно число ненулевое
             if (num1 != 0) {
-                result = protivopolozhnoeChislo(num1);
+                result = skleitDvaChisla(num1);
                 cout << "Противоположное число для " << num1 << ": " << result << endl;
             }
             else if (num2 != 0) {
-                result = protivopolozhnoeChislo(num2);
+                result = skleitDvaChisla(num2);
                 cout << "Противоположное число для " << num2 << ": " << result << endl;
             }
             else {
-                result = protivopolozhnoeChislo(num3);
+                result = skleitDvaChisla(num3);
                 cout << "Противоположное число для " << num3 << ": " << result << endl;
             }
         }
-        else if (count == 3) {
-            // Все три числа ненулевые - склеиваем первые два
-            result = skleitDvaChisla(num1, num2);
-            result = skleitDvaChisla(result, num3);
-            cout << "Результат склеивания трех чисел: " << result << endl;
-        }
         else {
-            cout << "Все числа нулевые!" << endl;
+            cout << "Все числа нулевые или больше 2 чисел" << endl;
         }
     }
     else if (vibor == 2) {
