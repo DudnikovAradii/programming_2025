@@ -2,210 +2,170 @@
 
 using namespace std;
 
-/*
-void matrixResult(int stroki, int stolbtsy, int** matritsa) {
-    int kolichestvoNulevyhStrok = 0;
+void matrixResult(int top, int left, int** mas) {
+    // Просто выводим матрицу
+    for (int i = 0; i < top; i++) {
+        for (int j = 0; j < left; j++) {
+            cout << mas[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
 
-    // Подсчет количества строк, содержащих нули
-    for (int i = 0; i < stroki; i++) {
-        for (int j = 0; j < stolbtsy; j++) {
-            if (matritsa[i][j] == 0) {
-                kolichestvoNulevyhStrok++;
-                break; // Переходим к следующей строке
+void removeZeroRows(int**& mas, int& top, int left) {
+    int coZ = 0;
+    int* zeroRow = 0;
+    // Есть ли нули в строке или нет (если есть хоть 1 нолик, то переходим на следующую строку)
+    for (int i = 0; i < top; i++) {
+        for (int j = 0; j < left; j++) {
+            if (mas[i][j] == 0) {
+                coZ++;
+                break;
             }
         }
     }
 
-    if (kolichestvoNulevyhStrok > 0) {
-        // Создаем массив для хранения номеров строк с нулями
-        int* massivNulevyhStrok = (int*)malloc(kolichestvoNulevyhStrok * sizeof(int));
-        int indeks = 0;
-
-        // Заполняем массив номерами строк с нулями
-        for (int i = 0; i < stroki; i++) {
-            for (int j = 0; j < stolbtsy; j++) {
-                if (matritsa[i][j] == 0) {
-                    massivNulevyhStrok[indeks] = i;
-                    indeks++;
+    // Выделяем память для coZ значений, туда мы поместим индексы строк, которые содержат нули.
+    if (coZ > 0) {
+        zeroRow = (int*)malloc(coZ * sizeof(int));
+        int index = 0;
+        for (int i = 0; i < top; i++) {
+            for (int j = 0; j < left; j++) {
+                if (mas[i][j] == 0) {
+                    zeroRow[index] = i;
+                    index++;
                     break;
                 }
             }
         }
 
-        // Выводим номера строк с нулями
         cout << "Строки с нулями: ";
-        for (int i = 0; i < kolichestvoNulevyhStrok; i++) {
-            cout << massivNulevyhStrok[i] << " ";
+        for (int i = 0; i < coZ; i++) {
+            cout << zeroRow[i] << " ";
         }
         cout << endl;
 
-        // Создаем новую матрицу без строк с нулями
-        int novyeStroki = stroki - kolichestvoNulevyhStrok;
-        int** novayaMatritsa = (int**)malloc(novyeStroki * sizeof(int*));
-        int novyyIndeks = 0;
+        // Удаляем строки с нулями из исходного массива
+        int newTop = top;
+        for (int i = 0; i < newTop; i++) {
+            bool flZ = false;
 
-        // Копируем только строки без нулей
-        for (int i = 0; i < stroki; i++) {
-            int udalit = 0;
-            // Проверяем, нужно ли удалять текущую строку
-            for (int k = 0; k < kolichestvoNulevyhStrok; k++) {
-                if (i == massivNulevyhStrok[k]) {
-                    udalit = 1;
+            // Проверяем, есть ли в строке нули
+            for (int j = 0; j < left; j++) {
+                if (mas[i][j] == 0) {
+                    flZ = true;
                     break;
                 }
             }
 
-            // Если строка без нулей - копируем ее
-            if (udalit == 0) {
-                novayaMatritsa[novyyIndeks] = (int*)malloc(stolbtsy * sizeof(int));
-                for (int j = 0; j < stolbtsy; j++) {
-                    novayaMatritsa[novyyIndeks][j] = matritsa[i][j];
+            // Если нашли строку с нулем, удаляем её
+            if (flZ) {
+                free(mas[i]);
+
+                // Сдвигаем все последующие строки на одну позицию вверх
+                for (int k = i; k < newTop - 1; k++) {
+                    mas[k] = mas[k + 1];
                 }
-                novyyIndeks++;
+                newTop--;
+                i--;
             }
         }
 
-        // Выводим результат
-        cout << "Матрица после удаления строк с нулями:" << endl;
-        for (int i = 0; i < novyeStroki; i++) {
-            for (int j = 0; j < stolbtsy; j++) {
-                cout << novayaMatritsa[i][j] << " ";
-            }
-            cout << endl;
+        // Изменяем размер массива указателей
+        if (newTop < top) {
+            mas = (int**)realloc(mas, newTop * sizeof(int*));
+            top = newTop;
         }
 
-        // Освобождаем память новой матрицы
-        for (int i = 0; i < novyeStroki; i++) {
-            free(novayaMatritsa[i]);
-        }
-        free(novayaMatritsa);
-        free(massivNulevyhStrok);
-    }
-    else {
-        // Если нулей нет - выводим исходную матрицу
-        cout << "Строки с нулями не найдены..." << endl;
-        cout << "Исходная матрица:" << endl;
-        for (int i = 0; i < stroki; i++) {
-            for (int j = 0; j < stolbtsy; j++) {
-                cout << matritsa[i][j] << " ";
+        // Выводим результат после удаления строк с нулями
+        for (int i = 0; i < top; i++) {
+            for (int j = 0; j < left; j++) {
+                cout << mas[i][j] << " ";
             }
             cout << endl;
         }
     }
 }
-*/
+
 int main() {
-    
-    setlocale(LC_ALL, "Russian");
-    /*
-    // Выделение памяти для исходной матрицы 2x2
-    int** matritsa = (int**)malloc(2 * sizeof(int*));
+    // создаём 2-х мерный массив с помощью 2-х указателей
+    int** mas = (int**)malloc(2 * sizeof(int*));
+
     for (int i = 0; i < 2; i++) {
-        matritsa[i] = (int*)malloc(2 * sizeof(int));
+        mas[i] = (int*)malloc(2 * sizeof(int));
     }
 
-    // Ввод данных с проверкой неотрицательности для A и B
-    cout << "Введите 4 числа для матрицы 2x2:" << endl;
     for (int i = 0; i < 2; i++) {
-        cout << (i == 0 ? "Первая строка (A и B): " : "Вторая строка (C и D): ");
         for (int j = 0; j < 2; j++) {
-            while (true) {
-                cin >> matritsa[i][j];
-                if (i != 0 || matritsa[i][j] >= 0) break;
-                cout << "A и B должны быть неотрицательными. Повторите ввод: ";
+            cin >> mas[i][j];
+            if (i == 0 && mas[i][j] < 0) {
+                int fl = 1;
+                while (fl == 1) {
+                    cout << "Введите новое НЕ отрицательное число: ";
+                    cin >> mas[i][j];
+                    if (mas[i][j] >= 0) {
+                        fl = 0;
+                    }
+                }
             }
         }
     }
 
-    // Сохраняем значения A, B, C, D
-    int A = matritsa[0][0];
-    int B = matritsa[0][1];
-    int C = matritsa[1][0];
-    int D = matritsa[1][1];
+    int A = mas[0][0];
+    int B = mas[0][1];
+    int C = mas[1][0];
+    int D = mas[1][1];
 
-    // Вычисляем новые размеры матрицы
-    int stroki = 2 + A;
-    int stolbtsy = 2 + B;
+    int top = 2 + A;
+    int left = 2 + B;
 
-    // Увеличиваем матрицу до новых размеров
-    matritsa = (int**)realloc(matritsa, stroki * sizeof(int*));
-    for (int i = 2; i < stroki; i++) {
-        matritsa[i] = (int*)malloc(stolbtsy * sizeof(int));
+    // расширяю массив с помощью функции realloc
+    mas = (int**)realloc(mas, top * sizeof(int*));
+
+    for (int i = 2; i < top; i++) {
+        mas[i] = (int*)malloc(left * sizeof(int));
     }
 
-    // Обрабатываем существующие строки (0 и 1)
-    for (int i = 0; i < 2; i++) {
-        int staryeZnacheniya[2];
-        // Сохраняем исходные значения
-        for (int j = 0; j < 2; j++) {
-            staryeZnacheniya[j] = matritsa[i][j];
-        }
-
-        // Расширяем строку и заполняем по формуле
-        matritsa[i] = (int*)realloc(matritsa[i], stolbtsy * sizeof(int));
-        for (int j = 0; j < stolbtsy; j++) {
-            matritsa[i][j] = i * C + j * D;
-        }
-
-        // Восстанавливаем исходные значения в новых позициях
-        for (int j = 0; j < 2; j++) {
-            matritsa[i][j + B] = staryeZnacheniya[j];
-        }
-    }
-
-    // Заполняем новые строки (начиная с 2) по формуле
-    for (int i = 2; i < stroki; i++) {
-        for (int j = 0; j < stolbtsy; j++) {
-            matritsa[i][j] = i * C + j * D;
-        }
-    }
-
-    // Сохраняем угловые элементы перед перемещением
-    int** sohranennyeElementy = (int**)malloc(2 * sizeof(int*));
-    for (int i = 0; i < 2; i++) {
-        sohranennyeElementy[i] = (int*)malloc(2 * sizeof(int));
-        for (int j = 0; j < 2; j++) {
-            sohranennyeElementy[i][j] = matritsa[i][j + B];
-        }
-    }
-
-    // Перемещаем сохраненные элементы в новые позиции
+    // сохраняю данные и заполняем матрицу
+    int old_block[2][2];
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
-            matritsa[i + A][j + B] = sohranennyeElementy[i][j];
+            old_block[i][j] = mas[i][j];
         }
     }
 
-    // Заполняем оставшиеся элементы по формуле
-    for (int i = 0; i < stroki; i++) {
-        for (int j = 0; j < stolbtsy; j++) {
-            if (i < A || j < B) {
-                matritsa[i][j] = i * C + j * D;
-            }
-        }
-    }
-
-    // Освобождаем память временного массива
+    // Расширяем существующие строки 0 и 1
     for (int i = 0; i < 2; i++) {
-        free(sohranennyeElementy[i]);
+        mas[i] = (int*)realloc(mas[i], left * sizeof(int));
     }
-    free(sohranennyeElementy);
 
-    // Выводим итоговую матрицу
-    cout << "Итоговая матрица размером " << stroki << "x" << stolbtsy << ":" << endl;
-    for (int i = 0; i < stroki; i++) {
-        for (int j = 0; j < stolbtsy; j++) {
-            cout << matritsa[i][j] << " ";
+    // Заполняем ВСЮ матрицу формулой
+    for (int i = 0; i < top; i++) {
+        for (int j = 0; j < left; j++) {
+            mas[i][j] = i * C + j * D;
         }
-        cout << endl;
     }
 
-    // Обрабатываем матрицу: удаляем строки с нулями
-    matrixResult(stroki, stolbtsy, matritsa);
+    // Восстанавливаем исходный блок в правом нижнем углу
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            mas[i + A][j + B] = old_block[i][j];
+        }
+    }
+
+    matrixResult(top, left, mas);
+
+    removeZeroRows(mas, top, left);
+
+    // Освобождаем память
+    for (int i = 0; i < top; i++) {
+        free(mas[i]);
+    }
+    free(mas);
 
     return 0;
-*/
-int a1, b1;
+}
+/*int a1, b1;
 std::cout << "Введите A:" << std::endl;
 std::cin >> a1;
 std::cout << "Введите B:" << std::endl;
@@ -233,4 +193,4 @@ std::cout << "B: " << b1 << std::endl;
 
 delete pa1;
 delete pb1;
-}
+*/
