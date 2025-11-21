@@ -4,10 +4,10 @@ using namespace std;
 
 // Функция для поиска строк с нулями
 // Функция для поиска строк с нулями
-int* findZeroRows(int** ukazatel, int kolichestvoStrok, int kolichestvoStolbtsov, int& schetchik) {
+int* findZero(int** ukazatel, int kolichestvoStrok, int kolichestvoStolbtsov, int& schetchik) {
     schetchik = 0;
 
-    // Первый проход: подсчитываем строки с нулями
+    // подсчитываем строки с нулями
     for (int nomerStroki = 0; nomerStroki < kolichestvoStrok; nomerStroki++) {
         bool naydenNol = false;
         for (int nomerStolbtsa = 0; nomerStolbtsa < kolichestvoStolbtsov; nomerStolbtsa++) {
@@ -49,9 +49,9 @@ void matrixResult(int**& massiv, int& stroki, int stolbtsy) {
         cout << endl;
     }
 
-    // Используем функцию findZeroRows для поиска строк с нулями
+    // Используем функцию findZero для поиска строк с нулями
     int schetchikNuley = 0;
-    int* strokiSNulyami = findZeroRows(massiv, stroki, stolbtsy, schetchikNuley);
+    int* strokiSNulyami = findZero(massiv, stroki, stolbtsy, schetchikNuley);
 
     // Если есть строки с нулями
     if (schetchikNuley > 0) {
