@@ -2,6 +2,43 @@
 
 using namespace std;
 
+// Функция для поиска строк с нулями
+// Функция для поиска строк с нулями
+int* findZeroRows(int** ukazatel, int kolichestvoStrok, int kolichestvoStolbtsov, int& schetchik) {
+    schetchik = 0;
+
+    // Первый проход: подсчитываем строки с нулями
+    for (int nomerStroki = 0; nomerStroki < kolichestvoStrok; nomerStroki++) {
+        bool naydenNol = false;
+        for (int nomerStolbtsa = 0; nomerStolbtsa < kolichestvoStolbtsov; nomerStolbtsa++) {
+            if (ukazatel[nomerStroki][nomerStolbtsa] == 0) {
+                naydenNol = true;
+                break;
+            }
+        }
+        if (naydenNol) {
+            schetchik++;
+        }
+    }
+
+    // Выделяем память для результата
+    int* strokiSNulyami = (int*)malloc(schetchik * sizeof(int));
+
+    // заполняем массив индексами строк с нулями
+    int tekushchiyIndex = 0;
+    for (int nomerStroki = 0; nomerStroki < kolichestvoStrok; nomerStroki++) {
+        for (int nomerStolbtsa = 0; nomerStolbtsa < kolichestvoStolbtsov; nomerStolbtsa++) {
+            if (ukazatel[nomerStroki][nomerStolbtsa] == 0) {
+                strokiSNulyami[tekushchiyIndex] = nomerStroki;
+                tekushchiyIndex++;
+                break;
+            }
+        }
+    }
+
+    return strokiSNulyami;
+}
+
 void matrixResult(int**& massiv, int& stroki, int stolbtsy) {
     // Сначала выводим исходную матрицу
     cout << "Исходная матрица:" << endl;
@@ -12,34 +49,12 @@ void matrixResult(int**& massiv, int& stroki, int stolbtsy) {
         cout << endl;
     }
 
-    // Затем обрабатываем строки с нулями
+    // Используем функцию findZeroRows для поиска строк с нулями
     int schetchikNuley = 0;
-    int* strokiSNulyami = 0;
-
-    // Считаем строки с нулями
-    for (int i = 0; i < stroki; i++) {
-        for (int j = 0; j < stolbtsy; j++) {
-            if (massiv[i][j] == 0) {
-                schetchikNuley++;
-                break;
-            }
-        }
-    }
+    int* strokiSNulyami = findZeroRows(massiv, stroki, stolbtsy, schetchikNuley);
 
     // Если есть строки с нулями
     if (schetchikNuley > 0) {
-        strokiSNulyami = (int*)malloc(schetchikNuley * sizeof(int));
-        int index = 0;
-        for (int i = 0; i < stroki; i++) {
-            for (int j = 0; j < stolbtsy; j++) {
-                if (massiv[i][j] == 0) {
-                    strokiSNulyami[index] = i;
-                    index++;
-                    break;
-                }
-            }
-        }
-
         cout << "Строки с нулями: ";
         for (int i = 0; i < schetchikNuley; i++) {
             cout << strokiSNulyami[i] << " ";
