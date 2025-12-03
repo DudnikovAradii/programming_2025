@@ -2,49 +2,51 @@
 #include <vector>
 #include <algorithm>
 
+using namespace std;
+
 // Функция для просмотра вектора
-void viewVector(const std::vector<int>& vec) {
-    std::cout << "[";
+void viewVector(const vector<int>& vec) {
+    cout << "[";
     for (int i = 0; i < vec.size(); ++i) {
-        std::cout << vec[i];
+        cout << vec[i];
         if (i < vec.size() - 1) {
-            std::cout << " ";
+            cout << " ";
         }
     }
-    std::cout << "]" << std::endl;
+    cout << "]" << endl;
 }
 
 // Добавление элемента в начало
-void addToBeginning(std::vector<int>& vec, int value) {
-    std::cout << "До: ";
+void addToBeginning(vector<int>& vec, int value) {
+    cout << "До: ";
     viewVector(vec);
     vec.insert(vec.begin(), value);
-    std::cout << "После: ";
+    cout << "После: ";
     viewVector(vec);
 }
 
 // Добавление элемента в конец
-void addToEnd(std::vector<int>& vec, int value) {
-    std::cout << "До: ";
+void addToEnd(vector<int>& vec, int value) {
+    cout << "До: ";
     viewVector(vec);
     vec.push_back(value);
-    std::cout << "После: ";
+    cout << "После: ";
     viewVector(vec);
 }
 
 // Очистка вектора
-void clearVector(std::vector<int>& vec) {
-    std::cout << "До: ";
+void clearVector(vector<int>& vec) {
+    cout << "До: ";
     viewVector(vec);
     vec.clear();
-    std::cout << "После: ";
+    cout << "После: ";
     viewVector(vec);
-    std::cout << "Вектор очищен!" << std::endl;
+    cout << "Вектор очищен!" << endl;
 }
 
 // Поиск элемента в векторе
-void findElement(const std::vector<int>& vec, int value) {
-    std::vector<int> indices;
+void findElement(const vector<int>& vec, int value) {
+    vector<int> indices;
     for (int i = 0; i < vec.size(); ++i) {
         if (vec[i] == value) {
             indices.push_back(i);
@@ -52,23 +54,23 @@ void findElement(const std::vector<int>& vec, int value) {
     }
 
     if (indices.empty()) {
-        std::cout << "[]" << std::endl;
+        cout << "[]" << endl;
     }
     else {
-        std::cout << "[";
+        cout << "[";
         for (int i = 0; i < indices.size(); ++i) {
-            std::cout << indices[i];
+            cout << indices[i];
             if (i < indices.size() - 1) {
-                std::cout << ",";
+                cout << ",";
             }
         }
-        std::cout << "]" << std::endl;
+        cout << "]" << endl;
     }
 }
 
 // Задание варианта: после каждого нечетного числа на четной позиции вставить 0
-void variantTask(std::vector<int>& vec) {
-    std::cout << "Вектор до преобразования: ";
+void variantTask(vector<int>& vec) {
+    cout << "Вектор до преобразования: ";
     viewVector(vec);
 
     bool found = false;
@@ -97,50 +99,50 @@ void variantTask(std::vector<int>& vec) {
         }
     }
 
-    std::cout << "Вектор после преобразования: ";
+    cout << "Вектор после преобразования: ";
     viewVector(vec);
 }
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    std::vector<int> vec;
+    vector<int> vec;
     vec.reserve(100'000);
     int choice;
 
     do {
-        std::cout << "\n=== Меню ===" << std::endl;
-        std::cout << "0. Выход" << std::endl;
-        std::cout << "1. Просмотр вектора" << std::endl;
-        std::cout << "2. Добавить элемент в начало" << std::endl;
-        std::cout << "3. Добавить элемент в конец" << std::endl;
-        std::cout << "4. Очистка всего вектора" << std::endl;
-        std::cout << "5. Поиск элемента в векторе" << std::endl;
-        std::cout << "6. Задание варианта" << std::endl;
-        std::cout << "Выберите пункт: ";
-        std::cin >> choice;
+        cout << "\n=== Меню ===" << endl;
+        cout << "0. Выход" << endl;
+        cout << "1. Просмотр вектора" << endl;
+        cout << "2. Добавить элемент в начало" << endl;
+        cout << "3. Добавить элемент в конец" << endl;
+        cout << "4. Очистка всего вектора" << endl;
+        cout << "5. Поиск элемента в векторе" << endl;
+        cout << "6. Задание варианта" << endl;
+        cout << "Выберите пункт: ";
+        cin >> choice;
 
         switch (choice) {
         case 0:
-            std::cout << "Выход из программы..." << std::endl;
+            cout << "Выход из программы..." << endl;
             break;
 
         case 1:
-            std::cout << "Текущий вектор: ";
+            cout << "Текущий вектор: ";
             viewVector(vec);
             break;
 
         case 2: {
             int value;
-            std::cout << "Введите значение для добавления в начало: ";
-            std::cin >> value;
+            cout << "Введите значение для добавления в начало: ";
+            cin >> value;
             addToBeginning(vec, value);
             break;
         }
 
         case 3: {
             int value;
-            std::cout << "Введите значение для добавления в конец: ";
-            std::cin >> value;
+            cout << "Введите значение для добавления в конец: ";
+            cin >> value;
             addToEnd(vec, value);
             break;
         }
@@ -151,9 +153,9 @@ int main() {
 
         case 5: {
             int value;
-            std::cout << "Введите значение для поиска: ";
-            std::cin >> value;
-            std::cout << "Индексы элемента " << value << ": ";
+            cout << "Введите значение для поиска: ";
+            cin >> value;
+            cout << "Индексы элемента " << value << ": ";
             findElement(vec, value);
             break;
         }
@@ -163,93 +165,109 @@ int main() {
             break;
 
         default:
-            std::cout << "Неверный выбор!" << std::endl;
+            cout << "Неверный выбор!" << endl;
         }
 
     } while (choice != 0);
 
     return 0;
 } 
-/*#include <iostream>
+/*
+#include <iostream>
 #include <vector>
 #include <array>
 #include <algorithm>
 
-using Vector = std::vector<int>;  
-using Array = std::array<int, 10>; 
+using namespace std;
 
+using Vector = vector<int>;
+using Array = array<int, 10>;
 
-// Функция сортировки, принимающая массив по значению (копия массива)
-void sort1(Array arr) {
-    std::sort(arr.begin(), arr.end()); // Сортировка копии массива
+// Функция сортировки с передачей массива по значению (создается копия)
+void sortOne(Array dataArray) {
+    int arraySize = 10;
+    for (int i = 0; i < arraySize - 1; i++)
+        for (int j = i + 1; j < arraySize; j++)
+            if (dataArray[i] > dataArray[j]) {
+                swap(dataArray[i], dataArray[j]);
+            }
+    // Массив отсортирован только внутри функции, оригинал не меняется
 }
 
-// Функция сортировки, принимающая массив по ссылке
-void sort2(Array& arr) {
-    std::sort(arr.begin(), arr.end()); // Сортировка исходного массива
+// Функция сортировки с передачей массива по ссылке (работает с оригиналом)
+void sortTwo(Array& dataArray) {
+    int arraySize = 10;
+    // Сортировка методом пузырька
+    for (int i = 0; i < arraySize - 1; i++)
+        for (int j = i + 1; j < arraySize; j++)
+            if (dataArray[i] > dataArray[j]) {
+                swap(dataArray[i], dataArray[j]); // Обмен элементов местами
+            }
+    // Изменения применяются к оригинальному массиву
 }
 
-// Функция сортировки, принимающая указатель на массив
-void sort3(Array* arr) {
-    std::sort((*arr).begin(), (*arr).end()); // Сортировка массива через указатель
+// Функция сортировки с передачей массива через указатель
+void sortThree(Array* dataArrayPtr) {
+    int arraySize = 10;
+    // Сортировка методом пузырька
+    for (int i = 0; i < arraySize - 1; i++)
+        for (int j = i + 1; j < arraySize; j++)
+            if ((*dataArrayPtr)[i] > (*dataArrayPtr)[j]) {
+                swap((*dataArrayPtr)[i], (*dataArrayPtr)[j]); // Обмен элементов через указатель
+            }
+    // Изменения применяются к оригинальному массиву через указатель
 }
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    // Исходный неотсортированный массив
-    Array arr = { 5, 7, 0, 9, 4, 2, 6, 8, 3, 1 };
-
+    // Инициализация массива случайными значениями
+    Array numbers = { 9, 1, 2, 0, 4, 3, 6, 8, 7, 5 };
     // Вывод исходного массива
-    std::cout << "Массив:" << std::endl;
+    cout << "Исходный массив:" << endl;
     for (int i = 0; i < 10; i++) {
-        std::cout << arr[i] << " ";
+        cout << numbers[i] << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
     // Сортировка передачей по значению (не изменяет исходный массив)
-    sort1(arr);
-    std::cout << "Отсортированный массив по значению:" << std::endl;
+    sortOne(numbers);
+    cout << "После сортировки по значению:" << endl;
     for (int i = 0; i < 10; i++) {
-        std::cout << arr[i] << " ";
+        cout << numbers[i] << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
-    // Восстановление исходного массива
-    arr = { 5, 7, 0, 9, 4, 2, 6, 8, 3, 1 };
-
-    // Вывод восстановленного массива
-    std::cout << "Массив:" << std::endl;
+    // Восстановление исходного порядка элементов
+    numbers = { 9, 1, 2, 0, 4, 3, 6, 8, 7, 5 };
+    cout << "Восстановленный массив:" << endl;
     for (int i = 0; i < 10; i++) {
-        std::cout << arr[i] << " ";
+        cout << numbers[i] << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
     // Сортировка передачей по ссылке (изменяет исходный массив)
-    sort2(arr);
-    std::cout << "Отсортированный массив по ссылке:" << std::endl;
+    sortTwo(numbers);
+    cout << "После сортировки по ссылке:" << endl;
     for (int i = 0; i < 10; i++) {
-        std::cout << arr[i] << " ";
+        cout << numbers[i] << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
-    // Восстановление исходного массива
-    arr = { 5, 7, 0, 9, 4, 2, 6, 8, 3, 1 };
-
-    // Вывод восстановленного массива
-    std::cout << "Массив:" << std::endl;
+    // Восстановление исходного порядка элементов
+    numbers = { 9, 1, 2, 0, 4, 3, 6, 8, 7, 5 };
+    cout << "Восстановленный массив:" << endl;
     for (int i = 0; i < 10; i++) {
-        std::cout << arr[i] << " ";
+        cout << numbers[i] << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
     // Сортировка передачей по указателю (изменяет исходный массив)
-    sort3(&arr);
-    std::cout << "Отсортированный массив по указателю:" << std::endl;
+    sortThree(&numbers);
+    cout << "После сортировки по указателю:" << endl;
     for (int i = 0; i < 10; i++) {
-        std::cout << arr[i] << " ";
+        cout << numbers[i] << " ";
     }
-    std::cout << std::endl;
+    cout << endl;
 
     return 0;
-}
-*/
+} */
