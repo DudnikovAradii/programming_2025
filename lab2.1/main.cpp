@@ -1,17 +1,21 @@
 #include <iostream>
 #include <string>
-// Поля: название, столица, дата основания, площадь, население.
-// Методы: геттеры на все, сеттер на столицу, вывод всей информации, присоединение новой территории, рост населения.
+#include <limits>
+#include <random> 
+#include <ctime>   
+
+// РџРѕР»СЏ: РЅР°Р·РІР°РЅРёРµ, СЃС‚РѕР»РёС†Р°, РґР°С‚Р° РѕСЃРЅРѕРІР°РЅРёСЏ, РїР»РѕС‰Р°РґСЊ, РЅР°СЃРµР»РµРЅРёРµ.
+// РњРµС‚РѕРґС‹: РіРµС‚С‚РµСЂС‹ РЅР° РІСЃРµ, СЃРµС‚С‚РµСЂ РЅР° СЃС‚РѕР»РёС†Сѓ, РІС‹РІРѕРґ РІСЃРµР№ РёРЅС„РѕСЂРјР°С†РёРё, РїСЂРёСЃРѕРµРґРёРЅРµРЅРёРµ РЅРѕРІРѕР№ С‚РµСЂСЂРёС‚РѕСЂРёРё, СЂРѕСЃС‚ РЅР°СЃРµР»РµРЅРёСЏ.
 using str = std::string;
 
 class Country {
 private:
-    str name_;                  
-    str capital_;               
-    double area_;               
+    str name_;                  //
+    str capital_;               //
+    double area_;               //
     long long population_;
 protected:
-    str date_;                  
+    str date_;                  //
 public:
     Country() {
         name_ = "unknown";
@@ -79,16 +83,11 @@ public:
     }
 
     void gros_population() {
-        long long add_population;
-        std::cerr << "Enter the new population size: " << std::endl;
-        std::cin >> add_population;
-        if (add_population <= 0) {
-            str error = "Population growth must be > 0";
-            throw error;
-        }
+        // std::srand(std::time(NULL));  
         long long old_population = population_;
-        population_ += add_population;
-        std::cout << "The population grew by: " << add_population << std::endl;
+        size_t random = 1000;
+        population_ += random;
+        std::cout << "The population grew by: " << random  << std::endl;
         std::cout << "Old population: " << old_population << std::endl;
         std::cout << "Current Population: " << population_ << std::endl;
     }
@@ -160,7 +159,6 @@ public:
     }
 
 };
-
 int main() {
     Country russia{ "Russia", "Moscow", "826 year", 171251.0, 1464472 };
     Country russia1{ russia };
@@ -193,7 +191,7 @@ int main() {
         double area;
         long long population;
         int add_area;
-        switch (choice) {
+switch (choice) {
         case 1:
             std::cout << "Country name: " << russia.get_name() << std::endl;
             break;
@@ -293,16 +291,14 @@ int main() {
             break;
 
         case 0:
-            std::cout << "Выход из программы..." << std::endl;
+            std::cout << "Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹..." << std::endl;
             break;
 
         default:
-            std::cout << "Неверный выбор!" << std::endl;
+            std::cout << "РќРµРІРµСЂРЅС‹Р№ РІС‹Р±РѕСЂ!" << std::endl;
             break;
         }
     } while (choice != 0);
 
     return 0;
-} 
-
-
+}
