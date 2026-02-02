@@ -251,7 +251,7 @@ void Country::set_cities(const strVec& cities) {
         for (int j = 1; j < city.length(); j++) {
             char c = city[j];
             if (allowed_chars.find(c) == std::string::npos) {
-                str error = "City name should be without numbers, spaces, punctuation marks and capital letters.";
+                str error = "City name should be without numbers, spaces, punctuation marks and capital letters";
                 throw error;
             }
         }
@@ -261,7 +261,7 @@ void Country::set_cities(const strVec& cities) {
 }
 
 void Country::print_info() const {
-    std::cout << "\n=== Country information ===" << std::endl;
+    std::cout << "Country information: " << std::endl;
     std::cout << "Name: " << name_ << std::endl;
     std::cout << "Capital: " << capital_ << std::endl;
     std::cout << "Date of foundation: " << date_ << std::endl;
