@@ -9,7 +9,7 @@ using strVec = std::vector<std::string>;
 int main() {
     using namespace mt;
 
-    std::cout << "=== Constructor calls at the start of main ===" << std::endl;
+    std::cout << "Constructor calls at the start of main " << std::endl;
 
     strVec russiaCities = { "SaintPetersburg", "Novosibirsk", "Yekaterinburg" };
     Country russia{ "Russia", "Moscow", "826", 171251.0, russiaCities };
@@ -18,7 +18,6 @@ int main() {
 
     Country russia2{};
 
-    std::cout << "===============================================\n" << std::endl;
 
     strVec citiesA = { "a", "b", "r" };
     Country A("A", "a", "1500", 150.0, citiesA);
@@ -31,7 +30,7 @@ int main() {
     int choice = -1; 
 
     do {
-        std::cout << "\n           COUNTRY DEMONSTRATION MENU" << std::endl;
+        std::cout << "         COUNTRY DEMONSTRATION MENU" << std::endl;
         std::cout << "1.  Demonstrate operator + (A + B)" << std::endl;
         std::cout << "2.  Demonstrate operator * (A * B)" << std::endl;
         std::cout << "3.  Change country name" << std::endl;
