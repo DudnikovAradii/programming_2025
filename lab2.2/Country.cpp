@@ -1,31 +1,33 @@
 #include "Country.hpp"
 #include <iostream>
 #include <exception>
+#include <algorithm>
+#include <cstdlib> 
+#include <ctime> 
 
 namespace mt {
 Country::Country() {
     name_ = "unknown";
     capital_ = "unknown";
-    date_ = "unknown";
     area_ = 0;
     std::cerr << "ctor default" << std::endl;
 }
 
-Country::Country(str name, str capital, str date, double area, const strVec& cities) :
-    name_(name), capital_(capital), date_(date), area_(area), cities_(cities) {
+Country::Country(str name, str capital, double area, const strVec& cities) :
+    name_(name), capital_(capital), area_(area), cities_(cities) {
     std::cerr << "ctor param" << std::endl;
 }
-Country::Country(const Country& c) : name_(c.name_), capital_(c.capital_), date_(c.date_), area_(c.area_), cities_(c.cities_) {
+Country::Country(const Country& c) : name_(c.name_), capital_(c.capital_), area_(c.area_), cities_(c.cities_) {
     std::cerr << "ctor copy" << std::endl;
 }
 Country::~Country() {
+    cities_.clear(); 
     std::cerr << "dtor" << std::endl;
 }
 Country& Country::operator=(const Country& other) {
     if (this != &other) {
         name_ = other.name_;
         capital_ = other.capital_;
-        date_ = other.date_;
         area_ = other.area_;
         cities_ = other.cities_;
         std::cerr << "operator= called" << std::endl;
@@ -35,7 +37,6 @@ Country& Country::operator=(const Country& other) {
 
 str Country::get_name() const { return name_; }
 str Country::get_capital() const { return capital_; }
-str Country::get_date() const { return date_; }
 double Country::get_area() const { return area_; }
 const strVec& Country::get_cities() const { return cities_; }
 
@@ -52,8 +53,6 @@ Country Country::operator+(const Country& other) const {
     }
 
     result.area_ = this->area_ + other.area_;
-
-    result.date_ = this->date_;
 
     result.cities_ = this->cities_;
 
@@ -80,6 +79,7 @@ Country Country::operator+(const Country& other) const {
 }
 
 Country Country::operator*(const Country& other) const {
+
     Country result;
 
     result.name_ = "path " + this->name_ + "->" + other.name_;
@@ -93,68 +93,102 @@ Country Country::operator*(const Country& other) const {
         result.area_ = other.area_;
     }
 
-    result.date_ = "No";
-
     result.cities_.clear();
 
     result.cities_.push_back(this->capital_);
     result.cities_.push_back(other.capital_);
 
-    if (!this->cities_.empty()) {
-        str city_to_add;
-        for (int i = 0; i < this->cities_.size(); i++) {
-            if (this->cities_[i] != this->capital_) {
-                city_to_add = this->cities_[i];
-                break;
-            }
-        }
-
-        if (!city_to_add.empty()) {
-            bool found = false;
-            for (int i = 0; i < result.cities_.size(); i++) {
-                if (result.cities_[i] == city_to_add) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (found) {
-                result.cities_.push_back(city_to_add + " new");
-            }
-            else {
-                result.cities_.push_back(city_to_add);
-            }
+    strVec first_candidates;
+    for (size_t i = 0; i < this->cities_.size(); i++) {
+        if (this->cities_[i] != this->capital_) {
+            first_candidates.push_back(this->cities_[i]);
         }
     }
 
-    if (!other.cities_.empty()) {
-        str city_to_add;
-        for (int i = 0; i < other.cities_.size(); i++) {
-            if (other.cities_[i] != other.capital_) {
-                city_to_add = other.cities_[i];
+    if (!first_candidates.empty()) {
+        size_t random_index = std::rand() % first_candidates.size();
+        str random_city = first_candidates[random_index];
+
+        bool duplicate = false;
+        for (size_t i = 0; i < result.cities_.size(); i++) {
+            if (result.cities_[i] == random_city) {
+                duplicate = true;
                 break;
             }
         }
 
-        if (!city_to_add.empty()) {
-            bool found = false;
-            for (int i = 0; i < result.cities_.size(); i++) {
-                if (result.cities_[i] == city_to_add) {
-                    found = true;
-                    break;
-                }
-            }
+        if (duplicate) {
+            result.cities_.push_back(random_city + " new");
+        }
+        else {
+            result.cities_.push_back(random_city);
+        }
+    }
 
-            if (found) {
-                result.cities_.push_back(city_to_add + " new");
+    strVec second_candidates;
+    for (size_t i = 0; i < other.cities_.size(); i++) {
+        if (other.cities_[i] != other.capital_) {
+            second_candidates.push_back(other.cities_[i]);
+        }
+    }
+
+    if (!second_candidates.empty()) {
+        size_t random_index = std::rand() % second_candidates.size();
+        str random_city = second_candidates[random_index];
+
+        bool duplicate = false;
+        for (size_t i = 0; i < result.cities_.size(); i++) {
+            if (result.cities_[i] == random_city) {
+                duplicate = true;
+                break;
             }
-            else {
-                result.cities_.push_back(city_to_add);
-            }
+        }
+
+        if (duplicate) {
+            result.cities_.push_back(random_city + " new");
+        }
+        else {
+            result.cities_.push_back(random_city);
         }
     }
 
     return result;
+}
+
+Country& Country::operator+=(const Country& other) {
+
+    name_ = name_ + "-" + other.name_;
+
+    if (area_ < other.area_) {
+        capital_ = other.capital_;
+    }
+
+    area_ += other.area_;
+
+    strVec result_cities = cities_;  
+
+    for (size_t i = 0; i < other.cities_.size(); i++) {
+        const str& city = other.cities_[i];
+        bool found = false;
+
+        for (size_t j = 0; j < cities_.size(); j++) {
+            if (cities_[j] == city) {
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            result_cities.push_back(city + " new");
+        }
+        else {
+            result_cities.push_back(city);
+        }
+    }
+
+    cities_ = result_cities;
+
+    return *this;
 }
 
 void Country::set_capital(str capital) {
@@ -209,19 +243,6 @@ void Country::set_name(str name) {
 
 }
 
-void Country::set_date(str date) {
-    str digits = "0123456789";
-    for (int i = 0; i < date.length(); i++) {
-        if (digits.find(date[i]) == std::string::npos) {
-            str error = "The date can contain only numbers.";
-            throw error;
-        }
-    }
-    date_ = date;
-    std::cerr << "Date after change: " << date_ << std::endl;
-
-}
-
 void Country::set_area(double area) {
     if (area < 0) {
         str error = "Area cannot be negative";
@@ -231,40 +252,40 @@ void Country::set_area(double area) {
     std::cerr << "Area after change: " << area_ << std::endl;
 }
 
-void Country::set_cities(const strVec& cities) {
+void Country::set_city_at_index(size_t index, const str& new_city_name) {
+    if (index >= cities_.size()) {
+        str error = "Invalid city index";
+        throw error;
+    }
+
+    if (new_city_name.empty()) {
+        str error = "City name cannot be empty";
+        throw error;
+    }
+
     str uppercase_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     str allowed_chars = "abcdefghijklmnopqrstuvwxyz";
 
-    for (int i = 0; i < cities.size(); i++) {
-        const str& city = cities[i];
+    if (uppercase_letters.find(new_city_name[0]) == std::string::npos) {
+        str error = "City name must start with an uppercase letter";
+        throw error;
+    }
 
-        if (city.empty()) {
-            str error = "City name cannot be empty";
+    for (size_t i = 1; i < new_city_name.length(); i++) {
+        char c = new_city_name[i];
+        if (allowed_chars.find(c) == std::string::npos) {
+            str error = "City name should be without numbers, spaces, punctuation marks and capital letters";
             throw error;
-        }
-
-        if (uppercase_letters.find(city[0]) == std::string::npos) {
-            str error = "City name must start with an uppercase letter";
-            throw error;
-        }
-
-        for (int j = 1; j < city.length(); j++) {
-            char c = city[j];
-            if (allowed_chars.find(c) == std::string::npos) {
-                str error = "City name should be without numbers, spaces, punctuation marks and capital letters";
-                throw error;
-            }
         }
     }
 
-    cities_ = cities;
+    cities_[index] = new_city_name;
 }
 
 void Country::print_info() const {
     std::cout << "Country information: " << std::endl;
     std::cout << "Name: " << name_ << std::endl;
     std::cout << "Capital: " << capital_ << std::endl;
-    std::cout << "Date of foundation: " << date_ << std::endl;
     std::cout << "Area: " << area_ << std::endl;
     std::cout << "Cities: ";
 

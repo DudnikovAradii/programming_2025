@@ -2,17 +2,20 @@
 #include <string>
 #include <vector>
 #include "Country.hpp"
+#include <cstdlib> 
+#include <ctime> 
 
 using str = std::string;
 using strVec = std::vector<std::string>;
 
 int main() {
     using namespace mt;
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     std::cout << "Constructor calls at the start of main " << std::endl;
 
     strVec russiaCities = { "SaintPetersburg", "Novosibirsk", "Yekaterinburg" };
-    Country russia{ "Russia", "Moscow", "826", 171251.0, russiaCities };
+    Country russia{ "Russia", "Moscow", 171251.0, russiaCities };
 
     Country russia1{ russia };
 
@@ -20,10 +23,10 @@ int main() {
 
 
     strVec citiesA = { "a", "b", "r" };
-    Country A("A", "a", "1500", 150.0, citiesA);
+    Country A("A", "a", 150.0, citiesA);
 
     strVec citiesB = { "v", "b", "m" };
-    Country B("B", "v", "1600", 100.0, citiesB);
+    Country B("B", "v", 100.0, citiesB);
 
     Country* current_country = nullptr;
     int country_choice;
@@ -35,7 +38,7 @@ int main() {
         std::cout << "2.  Demonstrate operator * (A * B)" << std::endl;
         std::cout << "3.  Change country name" << std::endl;
         std::cout << "4.  Change capital" << std::endl;
-        std::cout << "5.  Change date" << std::endl;
+        std::cout << "5.  Demonstrate operator += (A += B or B += A)" << std::endl;
         std::cout << "6.  Change area" << std::endl;
         std::cout << "7.  Change cities list" << std::endl;
         std::cout << "8.  Show all getters" << std::endl;
@@ -121,10 +124,31 @@ int main() {
 
         case 5: {
             try {
-                str new_date;
-                std::cout << "Enter new date for " << current_country->get_name() << ": ";
-                std::cin >> new_date;
-                current_country->set_date(new_date);
+                std::cout << "Select country to modify with += operation:" << std::endl;
+                std::cout << "1. Country A (will do A += B)" << std::endl;
+                std::cout << "2. Country B (will do B += A)" << std::endl;
+
+                if (country_choice == 1) {
+                    std::cout << " Before A += B " << std::endl;
+                    A.print_info();
+
+                    A += B;
+
+                    std::cout << " After A += B " << std::endl;
+                    A.print_info();
+                }
+                else if (country_choice == 2) {
+                    std::cout << " Before B += A =" << std::endl;
+                    B.print_info();
+
+                    B += A;
+
+                    std::cout << " After B += A " << std::endl;
+                    B.print_info();
+                }
+                else {
+                    std::cout << "Invalid choice!" << std::endl;
+                }
             }
             catch (const str& error) {
                 std::cerr << "Error: " << error << std::endl;
@@ -147,29 +171,50 @@ int main() {
 
         case 7: {
             try {
-                strVec new_cities;
-                std::cout << "Enter exactly 3 city names:" << std::endl;
+                const strVec& current_cities = current_country->get_cities();
 
-                for (int i = 0; i < 3; i++) {
-                    str city;
-                    std::cout << "Enter city " << (i + 1) << ": ";
-                    std::cin >> city;
-                    new_cities.push_back(city);
+                if (current_cities.empty()) {
+                    std::cout << "No cities available. You need to add cities first." << std::endl;
+                    break;
                 }
 
-                current_country->set_cities(new_cities);
+                std::cout << "Current cities of " << current_country->get_name() << ":" << std::endl;
+                for (size_t i = 0; i < current_cities.size(); i++) {
+                    std::cout << i + 1 << ". " << current_cities[i] << std::endl;
+                }
+
+                std::cout << "Select city number to change: ";
+                size_t city_num;
+                std::cin >> city_num;
+
+                if (city_num < 1 || city_num > current_cities.size()) {
+                    std::cout << "Invalid city number!" << std::endl;
+                    break;
+                }
+
+                str new_city;
+                std::cout << "Enter new name for city " << city_num << ": ";
+                std::cin >> new_city;
+
+                current_country->set_city_at_index(city_num - 1, new_city);
+
+                std::cout << "City " << city_num << " changed successfully to '" << new_city << "'." << std::endl;
+
+                std::cout << "Updated cities list:" << std::endl;
+                const strVec& updated_cities = current_country->get_cities();
+                for (size_t i = 0; i < updated_cities.size(); i++) {
+                    std::cout << i + 1 << ". " << updated_cities[i] << std::endl;
+                }
             }
             catch (const str& error) {
                 std::cerr << "Error: " << error << std::endl;
             }
             break;
         }
-
         case 8: {
             std::cout << "All getters for " << current_country->get_name() << std::endl;
             std::cout << "Name: " << current_country->get_name() << std::endl;
             std::cout << "Capital: " << current_country->get_capital() << std::endl;
-            std::cout << "Date: " << current_country->get_date() << std::endl;
             std::cout << "Area: " << current_country->get_area() << std::endl;
 
             const strVec& cities = current_country->get_cities();
