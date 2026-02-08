@@ -79,11 +79,9 @@ Country Country::operator+(const Country& other) const {
 }
 
 Country Country::operator*(const Country& other) const {
-
     Country result;
 
     result.name_ = "path " + this->name_ + "->" + other.name_;
-
     result.capital_ = "No";
 
     if (this->area_ < other.area_) {
@@ -94,7 +92,6 @@ Country Country::operator*(const Country& other) const {
     }
 
     result.cities_.clear();
-
     result.cities_.push_back(this->capital_);
     result.cities_.push_back(other.capital_);
 
@@ -106,7 +103,10 @@ Country Country::operator*(const Country& other) const {
     }
 
     if (!first_candidates.empty()) {
-        size_t random_index = std::rand() % first_candidates.size();
+        int random_index = 0;
+        if (first_candidates.size() > 1) {
+            random_index = std::rand() % static_cast<int>(first_candidates.size());
+        }
         str random_city = first_candidates[random_index];
 
         bool duplicate = false;
@@ -133,7 +133,10 @@ Country Country::operator*(const Country& other) const {
     }
 
     if (!second_candidates.empty()) {
-        size_t random_index = std::rand() % second_candidates.size();
+        int random_index = 0;
+        if (second_candidates.size() > 1) {
+            random_index = std::rand() % static_cast<int>(second_candidates.size());
+        }
         str random_city = second_candidates[random_index];
 
         bool duplicate = false;
