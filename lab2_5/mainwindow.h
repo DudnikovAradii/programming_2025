@@ -39,6 +39,11 @@ private:
     void loadFromFile(const QString& filename_);
     void updateTable();
     void clearData();
+
+    //Методы для получения частей имени
+    QString getLastNameFromPerson(Person* person_) const;
+    QString getFirstNameFromPerson(Person* person_) const;
+    QString getMiddleOrPatronymicFromPerson(Person* person_) const;
 };
 
 #endif // MAINWINDOW_H

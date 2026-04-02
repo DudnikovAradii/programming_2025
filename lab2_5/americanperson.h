@@ -2,31 +2,28 @@
 #define AMERICANPERSON_H
 
 #include "person.h"
+#include <QRegularExpression>
 
-// КЛАСС ДЛЯ АМЕРИКАНЦЕВ (AmP)
-// Добавляет поле "Middle name" (второе имя), теперь обязательное
+//Класс для американцев
 class AmericanPerson : public Person {
 private:
-    QString middleName_;  // Middle name (второе имя)
+    QString middleName_;
 
-    // ПРОВЕРКА MIDDLE NAME: только английские буквы, обязательно не пустое
     bool isValidMiddleName(const QString& s) const {
-        if (s.isEmpty()) return false; // теперь пустое не допускается
+        if (s.isEmpty()) return false;
         QRegularExpression re("^[A-Z][a-z]{0,49}$");
         return re.match(s).hasMatch();
     }
 
 public:
-    // КОНСТРУКТОРЫ
+
     AmericanPerson();
     AmericanPerson(const QString& firstName_, const QString& middleName_,
                    const QString& lastName_, const Date& birthDate_);
 
-    // ПЕРЕОПРЕДЕЛЕНИЕ ВИРТУАЛЬНЫХ МЕТОДОВ
-    QString getFullName() const override;  // Формат: "Джеймс Джозеф Парсонс"
-    void craft(QWidget* parent_ = nullptr) override;  // Показать пропуск
+    QString getFullName() const override;
+    void craft(QWidget* parent_ = nullptr) override;
 
-    // Сеттер для middle name с проверкой
     bool setMiddleName(const QString& mid_);
     QString getMiddleName() const { return middleName_; }
 };

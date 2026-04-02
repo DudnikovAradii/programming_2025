@@ -1,7 +1,9 @@
 #include "russianperson.h"
 #include "passform.h"
 
-RussianPerson::RussianPerson() : Person() {}
+RussianPerson::RussianPerson() : Person() {
+    setFormat(DateFormat::Russian);
+}
 
 RussianPerson::RussianPerson(const QString& lastName_, const QString& firstName_,
                              const QString& patronymic_, const Date& birthDate_) {
@@ -9,6 +11,8 @@ RussianPerson::RussianPerson(const QString& lastName_, const QString& firstName_
     this->firstName_ = firstName_;
     this->patronymic_ = patronymic_;
     this->birthDate_ = birthDate_;
+
+    setFormat(DateFormat::Russian);
 }
 
 QString RussianPerson::getFullName() const {
@@ -28,6 +32,5 @@ bool RussianPerson::setPatronymic(const QString& patr_) {
         patronymic_ = patr_;
         return true;
     }
-    qDebug() << "Ошибка: неверное отчество" << patr_;
     return false;
 }

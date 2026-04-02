@@ -10,7 +10,7 @@ PassForm::PassForm(Person* person_, QWidget* parent_)
 
     setWindowTitle("Пропуск");
     setMinimumSize(400, 500);
-    setModal(true);  // Сделать модальным окном
+    setModal(true);
 }
 
 PassForm::~PassForm() {}
@@ -27,7 +27,6 @@ void PassForm::setupUI() {
     titleLabel_->setFont(titleFont_);
     mainLayout_->addWidget(titleLabel_);
 
-    // Разделитель
     mainLayout_->addWidget(new QLabel("----------------------------------------"));
 
     // Информация о человеке
@@ -38,7 +37,7 @@ void PassForm::setupUI() {
     nameLabel_->setFont(nameFont_);
     mainLayout_->addWidget(nameLabel_);
 
-    birthLabel_ = new QLabel("Дата рождения: " + person_->getBirthDate().toString());
+    birthLabel_ = new QLabel("Дата рождения: " + person_->getFormattedBirthDate());
     birthLabel_->setAlignment(Qt::AlignCenter);
     birthLabel_->setFont(nameFont_);
     mainLayout_->addWidget(birthLabel_);
@@ -155,6 +154,6 @@ void PassForm::onCancel() {
 }
 
 void PassForm::onPrint() {
-    emit personDeleted(person_);  // Используем сигнал вместо event
+    emit personDeleted(person_);
     close();
 }

@@ -1,7 +1,9 @@
 #include "americanperson.h"
 #include "passform.h"
 
-AmericanPerson::AmericanPerson() : Person() {}
+AmericanPerson::AmericanPerson() : Person() {
+    setFormat(DateFormat::American);
+}
 
 AmericanPerson::AmericanPerson(const QString& firstName_, const QString& middleName_,
                                const QString& lastName_, const Date& birthDate_) {
@@ -9,15 +11,14 @@ AmericanPerson::AmericanPerson(const QString& firstName_, const QString& middleN
     this->lastName_ = lastName_;
     this->birthDate_ = birthDate_;
 
-    // теперь middle name обязателен, проверяем сразу
+    setFormat(DateFormat::American);
+
     if (!setMiddleName(middleName_)) {
-        qDebug() << "Ошибка: Middle name не может быть пустым или содержать недопустимые символы";
-        this->middleName_ = "Unknown"; // или можно выбросить исключение
+        this->middleName_ = "Unknown";
     }
 }
 
 QString AmericanPerson::getFullName() const {
-    // теперь middle name всегда обязателен
     return QString("%1 %2 %3").arg(firstName_).arg(middleName_).arg(lastName_);
 }
 
@@ -32,6 +33,5 @@ bool AmericanPerson::setMiddleName(const QString& mid_) {
         middleName_ = mid_;
         return true;
     }
-    qDebug() << "Ошибка: неверное middle name" << mid_;
     return false;
 }
